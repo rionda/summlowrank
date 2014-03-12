@@ -21,11 +21,15 @@ if [ ! -e ${DATA_DIR}/dense/${GRAPH_NAME}-dense.txt ]; then
 	${PYTHON_BIN} edgelist_to_densematrix.py ${GRAPH_FILE} > ${DATA_DIR}/dense/${GRAPH_NAME}-dense.txt
 fi
 
-sh svd.sh ${DATA_DIR}/sparse/${GRAPH_NAME}-sparse.txt ${DATA_DIR}/SVD/${GRAPH_NAME}-SVD-${K} ${K}
+if [ ! -e ${DATA_DIR}/SVD/${GRAPH_NAME}-SVD-${K}.V ]; then
+  sh svd.sh ${DATA_DIR}/sparse/${GRAPH_NAME}-sparse.txt ${DATA_DIR}/SVD/${GRAPH_NAME}-SVD-${K} ${K}
+fi
 
-${PYTHON_BIN} get_low_rank_from_svd.py ${DATA_DIR}/SVD/${GRAPH_NAME}-SVD-${K} > ${DATA_DIR}/lowrank/${GRAPH_NAME}-lowrank-${K}.txt
+if [ ! -e ${DATA_DIR}/lowrank/${GRAPH_NAME}-lowrank-${K}.txt ]; then
+  ${PYTHON_BIN} get_low_rank_from_svd.py ${DATA_DIR}/SVD/${GRAPH_NAME}-SVD-${K} > ${DATA_DIR}/lowrank/${GRAPH_NAME}-lowrank-${K}.txt
+fi
 
-ERR=`${PYTON_BIN} get_norm_of_difference.py 2 ${DATA_DIR}/dense/${GRAPH_NAME}-dense.txt ${DATA_DIR}/lowrank/${GRAPH_NAME}-lowrank-${K}.txt`
+ERR=`${PYTHON_BIN} get_norm_of_difference.py 2 ${DATA_DIR}/dense/${GRAPH_NAME}-dense.txt ${DATA_DIR}/lowrank/${GRAPH_NAME}-lowrank-${K}.txt`
 
-echo ${GRAPH_NAME}\t${K}\t${ERR}
+echo "${GRAPH_NAME}\t${K}\t${ERR}"
 
