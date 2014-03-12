@@ -26,9 +26,11 @@ def main():
     curr_err = 0
     for i in range(len(summ)):
         for j in range(len(summ)):
-            curr_err += math.pow(math.abs(orig[i][j] - summ[i][j]), norm)
+            curr_err += math.pow(abs(orig[i][j] - summ[i][j]), norm)
+    if norm == 2:
+        curr_err = math.sqrt(curr_err)
 
-    print(curr_err)
+    print(curr_err / math.pow(len(summ), 2))
 
 
 if __name__ == "__main__":
