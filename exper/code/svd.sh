@@ -1,6 +1,6 @@
 #! /bin/sh
 
-REDSVD="/Users/rionda/Documents/uni/res/summappl/exper/code/redsvd-0.2.0/src/redsvd"
+REDSVD="redsvd"
 
 if [ $# -ne 3 ]; then
 	echo "Error: wrong number of argument" > /dev/stderr
